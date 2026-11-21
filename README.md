@@ -1,4 +1,4 @@
-[200~# Log Analysis & Detection Lab
+# Log Analysis & Detection Lab
 
 Simulation d'attaques (brute force SSH, scan web, injections) dans un laboratoire VMware, puis détection par un script Python et supervision dans Splunk.
 
@@ -37,7 +37,62 @@ Réseau VMware en mode NAT.
 
 ## Structure du dépôt
 
-- scripts/ : script Python de détection
+- scripts/ : script Python de détection# Log Analysis & Detection Lab
+
+Simulation d'attaques (brute force SSH, scan web, injections) dans un laboratoire VMware, puis détection par un script Python et supervision dans Splunk.
+
+> Projet pédagogique réalisé dans un environnement isolé, sur mes propres machines virtuelles.
+
+## Architecture du labo
+
+| Machine | Rôle | IP |
+|---|---|---|
+| Kali Linux | Attaquant | 192.168.154.129 |
+| Ubuntu Desktop | Cible (openssh-server, apache2, Splunk Enterprise) | 192.168.154.130 |
+
+Réseau VMware en mode NAT.
+
+## Scénarios d'attaque
+
+| Outil | Cible | Résultat |
+|---|---|---|
+| Hydra | SSH | Brute force avec une wordlist de 10 000 mots de passe (extrait de rockyou.txt), mot de passe trouvé après 9 233 tentatives, plus de 20 000 lignes d'échecs dans auth.log |
+| Nikto | Apache | 702 requêtes enregistrées dans access.log |
+| Gobuster | Apache | 4 613 chemins testés, 5 résultats (.htaccess, .hta, .htpasswd, index.html, server-status) |
+| curl | Apache | 5 requêtes simulant SQLi, XSS, path traversal, injection de commande et contournement de login |
+
+## Script de détection
+
+`scripts/analyse_logs.py` (Python, approche par règles, sans machine learning) :
+- parse `auth.log` et `access.log` ;
+- détecte les campagnes de brute force SSH (fenêtre de temps + seuil), les scans web et les injections ;
+- génère `rapport/events.csv` et `rapport/summary.json`.
+
+## Supervision Splunk
+
+- Index `analyse_de_logs` : 42 546 événements (SSH et Apache).
+- Dashboard « Detection attaque » avec 6 panneaux : évolution des échecs SSH, top IP attaquantes SSH, total des échecs SSH, codes HTTP Apache, injections détectées, top IP de scan web.
+- Alerte planifiée « Alerte Brute Force SSH » : plus de 10 échecs par IP, exécution toutes les heures.
+
+## Captures
+
+### Attaque SSH (Hydra)
+
+[Lancement d'Hydra](captures/01-hydra-lancement.png)
+[Résultat d'Hydra](captures/02-hydra-resultat.png)
+[Échecs dans auth.log](captures/03-auth-log-echecs-ssh.png)
+
+### Attaques web (Nikto, Gobuster)
+
+[Nikto](captures/04-nikto-scan-web.png)
+[Analyse d'access.log](captures/05-access-log-analyse.png)
+[Gobuster](captures/06-gobuster-enumeration.png)
+
+### Détection dans Splunk
+
+[Dashboard 1](captures/07-splunk-dashboard-1.png)
+[Dashboard 2](captures/08-splunk-dashboard-2.png)
+[Alerte brute force]
 - splunk/ : requêtes SPL et export du dashboard
 - captures/ : captures d'écran du labo et du dashboard
 - rapport/ : résultats générés (events.csv, summary.json)
