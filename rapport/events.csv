@@ -1,0 +1,9 @@
+chemin,connexion_reussie,debut,delai_jusqu_succes_sec,dernier_echec,fin,horodatage,ip,methode,premier_echec,requetes_404,statut_http,total_echecs,total_requetes,type
+,,,,2026-11-10T20:58:59,,,192.168.154.129,,2026-11-10T20:06:48,,,8025,,Brute force SSH
+,2026-11-11T15:16:44,,3322.0,2026-11-11T15:16:46,,,192.168.154.129,,2026-11-11T14:21:22,,,11987,,Brute force SSH
+,,2026-11-11T21:31:20,,,2026-11-11T22:31:49,,192.168.154.129,,,5238,,,5320,Scan / énumération web
+/index.html?id=1'%20OR%20'1'='1,,,,,,2026-11-11T22:25:38,192.168.154.129,GET,,,200,,,Tentative d'injection (Injection SQL)
+/index.html?search=<script>alert(1)</script>,,,,,,2026-11-11T22:28:10,192.168.154.129,GET,,,200,,,Tentative d'injection (XSS)
+/index.html?file=../../../../etc/passwd,,,,,,2026-11-11T22:29:31,192.168.154.129,GET,,,200,,,Tentative d'injection (Path Traversal)
+/index.html?cmd=;cat%20/etc/shadow,,,,,,2026-11-11T22:31:43,192.168.154.129,GET,,,200,,,"Tentative d'injection (Injection de commande, Path Traversal)"
+/login.php?user=admin'--,,,,,,2026-11-11T22:31:49,192.168.154.129,GET,,,404,,,Tentative d'injection (Injection SQL)

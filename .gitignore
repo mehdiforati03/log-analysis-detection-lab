@@ -1,0 +1,5 @@
+*.log
+rockyou*
+wordlist*
+__pycache__/
+*.pyc

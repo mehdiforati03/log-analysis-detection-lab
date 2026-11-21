@@ -1,0 +1,14 @@
+{
+  "genere_le": "2026-11-13T20:18:44.368480",
+  "lignes_ssh_analysees": 20013,
+  "lignes_apache_analysees": 5320,
+  "nb_alertes_bruteforce_ssh": 2,
+  "nb_alertes_scan_web": 1,
+  "nb_alertes_injection": 5,
+  "seuils": {
+    "ssh_fail_threshold": 10,
+    "ssh_window_seconds": 300,
+    "web_req_threshold": 50,
+    "web_window_seconds": 10
+  }
+}
